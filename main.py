@@ -3,6 +3,26 @@ import subprocess
 import time
 import os
 
+# tkinter 應不需額外安裝 除非出現錯誤
+import tkinter as tk
+from tkinter import filedialog
+
+def selectPath():
+    root = tk.Tk()
+    root.withdraw() # 隱藏主視窗
+
+    path = filedialog.asksaveasfilename(
+        title="選擇儲存位置",
+        defaultextension=".mp4", # 預設副檔名
+        initialfile="stream.mp4", # 預設檔名
+        initialdir=os.path.join(os.path.expanduser("~"), "Downloads"), # 預設下載位置
+        filetypes=[(".mp4", "*.mp4"), (".wmv", "*.wmv"), (".mkv", "*.mkv"), (".flv", "*.flv"), (".webm", "*.webm"),\
+                   ("Video", "*.mp4;*.wmv;*.mkv;*.flv;*.webm"), ("All File", "*.*")] # 下載格式過濾
+    )
+
+    return path
+
+
 def download_stream(url, output_filename, quality='best'):
     while True:
         try:
@@ -42,7 +62,11 @@ def download_stream(url, output_filename, quality='best'):
 
 if __name__ == "__main__":
     youtube_url = input("請輸入YouTube直播URL: ")
-    output_file = input("請輸入輸出文件名 (包括路徑): ")
+
+    # 防止誤關視窗
+    output_file = ""
+    while output_file == "":
+        output_file = selectPath()
 
     # 確保輸出目錄存在
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
