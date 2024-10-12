@@ -42,7 +42,7 @@ def download_stream(url, output_filename):
             while process.poll() is None:  # 監控yt-dlp進程
                 time.sleep(1)
                 current_time = time.time()
-                if current_time - last_data_received > 120:  # 2分鐘沒有收到數據
+                if current_time - last_data_received > 120:
                     print("2分鐘內沒有收到數據，停止下載")
                     process.terminate()
                     return
